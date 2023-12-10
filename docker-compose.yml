@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  images:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    depends_on:
+      images_db:
+          condition: service_healthy
+    environment:
+      - DB_HOST=images_db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=reine1234
+      - DB_NAME=journal_image
+    networks:
+      - mysql-net
+    container_name: images
+    restart: always
+
+  images_db:
+    image: mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+    restart: always
+    container_name: mysql_images
+    hostname: images_db
+    networks:
+      - mysql-net
+    volumes:
+      - images_db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: reine1234
+      MYSQL_DATABASE: journal_image
+    ports:
+      - "3308:3306"
+
+networks:
+  mysql-net:
+    external: true
+
+volumes:
+  images_db:

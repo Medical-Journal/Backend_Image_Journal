@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-images-deployment
+  labels:
+    app: backend-images
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-images
+  template:
+    metadata:
+      labels:
+        app: backend-images
+    spec:
+      containers:
+        - name: backend-images
+          image: estebanmasaya/backend-images:latest
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: mysql-url
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-images-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend-images
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083
