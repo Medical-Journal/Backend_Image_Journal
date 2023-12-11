@@ -8,7 +8,7 @@ app.use(cors());
 
 
 app.use('/journal', imageRoutes);
-//
+
 sequelize.sync()
     .then(() => {
         console.log("Database synchronized!")
