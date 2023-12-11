@@ -13,7 +13,7 @@ exports.updateImage = async (req, res) => {
             { image_data: imageBuffer },
             { where: { id: image_id }, returning: true, raw: true }
         );
-//
+
         if (rowsAffected === 0) {
             return res.status(404).json({ error: 'Image not found for the specified image_id' });
         }
