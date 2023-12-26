@@ -14,7 +14,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '19'
+          node-version: '16'
 
       - name: Set npm registry
         run: npm config set registry https://registry.npmjs.org/
