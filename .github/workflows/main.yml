@@ -14,17 +14,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '18'
 
-      - name: Set npm registry
-        run: npm config set registry https://registry.npmjs.org/
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules
+          npm install --verbose
 
       - name: Install sqlite3
-        run: npm install sqlite3 --verbose
-
-
-      - name: Install dependencies
-        run: npm install --verbose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sqlite3 libsqlite3-dev
+          npm install sqlite3 --build-from-source --verbose
 
       - name: Run tests
         run: npm test
