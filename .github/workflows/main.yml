@@ -14,13 +14,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.10.0
+          node-version: 20
+
+      - name: Set npm registry
+        run: npm config set registry https://registry.npmjs.org/
 
       - name: Install sqlite3
-        run: npm install --save-dev sqlite3
+        run: npm install --save-dev sqlite3 --verbose
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --verbose
 
       - name: Run tests
         run: npm test
