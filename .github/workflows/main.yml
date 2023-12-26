@@ -14,14 +14,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: 20.10.0
+
+      - name: Install sqlite3
+        run: npm install --save-dev sqlite3
 
       - name: Install dependencies
         run: npm install
 
-      - name: Install sqlite3
-        run: npm install --save-dev sqlite3
-        
       - name: Run tests
         run: npm test
   docker:
